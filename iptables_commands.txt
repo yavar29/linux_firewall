@@ -1,0 +1,30 @@
+1) Permanent iptables NAT rule
+sudo iptables -t nat -A POSTROUTING -o enp0s8 -j MASQUERADE
+
+2)Delete existing filter table rules
+iptables -t filter -F
+
+3)Drop all forwarding traffic
+iptables -t filter -P FORWARD DROP
+
+4)Block specific ip address
+iptables -t filter -A INPUT -s "$BLOCK_THIS_IP" -j DROP
+
+5)Unblock specific ip address
+iptables -t filter -D INPUT -s "$BLOCK_THIS_IP" -j DROP
+
+6)Block Web traffic
+iptables -A FORWARD -p tcp -m multiport --destination-port 80,443 -j DROP
+
+7)Unblock Web Traffic
+iptables -D FORWARD -p tcp -m multiport --destination-port 80,443 -j DROP
+
+8)Block Web traffic
+iptables -A FORWARD -p tcp --destination-port 22 -j DROP
+
+9)Unblock Web Traffic
+iptables -D FORWARD -p tcp --destination-port 22 -j DROP
+
+
+
+
